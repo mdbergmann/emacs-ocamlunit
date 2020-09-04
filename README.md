@@ -1,6 +1,6 @@
 # emacs-ocamlunit
 
-This is a Emacs minor mode implementation for to run OUnit2 tests or other tests in a OCaml `dune` project.
+This is a Emacs minor mode implementation to run OUnit2 tests or other tests in a OCaml `dune` project.
 
 Tests are actually run with `dune test`. So also other test definitions than OUnit/OUnit2 are run also.
 
