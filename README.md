@@ -17,7 +17,7 @@ When done you have a minor mode called `ocamlunit-mode`.
 This mode can be enabled for basically every buffer but only `tuareg-mode` buffers are supported.
 On other code or project it just saves the buffer.
 
-To run the tests a buffer use the key sequence: `C-t c`.
+To run the tests a buffer use the key sequence: `C-c t`.
 This will first save the buffer and then run the tests using `dune`.
 
 After the first execution of `ocamlunit-execute` you can view the "OCamlUnit output" buffer for test output.

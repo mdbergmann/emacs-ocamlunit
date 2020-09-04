@@ -1,4 +1,4 @@
-;;; ocamlunit.el --- OUnit2 test runner -*- lexical-binding: t -*-
+;;; ocamlunit.el --- `dune test' runner -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2020 Manfred Bergmann.
 
@@ -32,7 +32,7 @@
 (make-variable-buffer-local
  (defvar ocamlunit-mode))
 
-(defun execute-ocaml-test ()
+(defun ocamlunit-execute-test ()
   "Call OCaml test via 'dune'."
   (let* ((test-cmd-args (list "opam" "exec" "dune" "test"))
          (call-args
@@ -45,39 +45,39 @@
       (message "test call result: %s" call-result)
       call-result)))
 
-(defun handle-successful-test-result ()
+(defun ocamlunit-handle-successful-test-result ()
   "Do some stuff when the tests ran OK.")
 
-(defun handle-unsuccessful-test-result ()
+(defun ocamlunit-handle-unsuccessful-test-result ()
   "Do some stuff when the tests ran NOK.")
 
-(defun after-save-action ()
+(defun ocamlunit-after-save-action ()
   "Execute the test."
   (message "ocamlunit: after save action from in: %s" major-mode)
 
   (let ((test-result (cond
                       ((string-equal "tuareg-mode" major-mode)
-                       (execute-ocaml-test))
+                       (ocamlunit-execute-test))
                       (t (progn (message "Unknown mode!")
                                 nil)))))
 
     (unless (eq test-result nil)
       (if (= test-result 0)
-          (handle-successful-test-result)
-        (handle-unsuccessful-test-result)))))
+          (ocamlunit-handle-successful-test-result)
+        (ocamlunit-handle-unsuccessful-test-result)))))
 
 (defun ocamlunit-execute ()
   "Save buffers and execute dune to run the tests."
   (interactive)
   (save-buffer)
   (save-some-buffers)
-  (after-save-action))
+  (ocamlunit-after-save-action))
 
 (define-minor-mode ocamlunit-mode
   "OCaml - OUnit/OUnit2 test runner. Actually `dune test' is run. So this might catch more tests than only OUnit"
   :lighter " OCamlUnit"
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "C-t c") 'ocamlunit-execute)
+            (define-key map (kbd "C-c t") 'ocamlunit-execute)
             map))
 
 (provide 'ocamlunit)
