@@ -21,8 +21,8 @@ To configure a custom key binding do this:
   :load-path "~/.emacs.d/plugins/ocamlunit"
   :bind (:map ocamlunit-mode-map
               ("C-c C-t" . ocamlunit-execute))
-  :init
-  (autoload 'ocamlunit-mode "ocamlunit" nil t))
+  :commands
+  (ocamlunit-mode))
 ```
 
 When done you have a minor mode called `ocamlunit-mode`.
