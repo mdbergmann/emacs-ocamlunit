@@ -33,3 +33,6 @@ On other code or project it just saves the buffer.
 The key sequence: `C-c t` (or a custom defined one) will first save the buffer and then run the tests using `dune`.
 
 After the first execution of `ocamlunit-execute` you can view the "OCamlUnit output" buffer for test output.
+
+
+![Emacs screenshot](ocamlunit-.png)
