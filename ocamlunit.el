@@ -46,10 +46,14 @@
       call-result)))
 
 (defun ocamlunit-handle-successful-test-result ()
-  "Do some stuff when the tests ran OK.")
+  "Do some stuff when the tests ran OK."
+  (interactive)
+  (message "%s" (propertize "Tests OK" 'face '(:foreground "green"))))
 
 (defun ocamlunit-handle-unsuccessful-test-result ()
-  "Do some stuff when the tests ran NOK.")
+  "Do some stuff when the tests ran NOK."
+  (interactive)
+  (message "%s" (propertize "Tests failed!" 'face '(:foreground "red"))))
 
 (defun ocamlunit-after-save-action ()
   "Execute the test."
