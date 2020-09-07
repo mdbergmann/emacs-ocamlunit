@@ -35,4 +35,4 @@ The key sequence: `C-c t` (or a custom defined one) will first save the buffer a
 After the first execution of `ocamlunit-execute` you can view the "OCamlUnit output" buffer for test output.
 
 
-![Emacs screenshot](ocamlunit-.png)
+![Emacs screenshot](ocamlunit-output.png)
