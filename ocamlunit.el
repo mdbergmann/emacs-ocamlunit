@@ -35,7 +35,7 @@
 (defvar ocamlunit-test-failure-hook nil)
 (defvar ocamlunit-test-success-hook nil)
 
-(defvar-local *ocamlunit-output-buf-name* "OCamlUnit output")
+(defvar-local *ocamlunit-output-buf-name* "*OCamlUnit*")
 
 (defun ocamlunit-execute-test ()
   "Call OCaml test via 'dune'."
