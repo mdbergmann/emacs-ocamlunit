@@ -32,11 +32,16 @@
 (make-variable-buffer-local
  (defvar ocamlunit-mode))
 
+(defvar ocamlunit-test-failure-hook nil)
+(defvar ocamlunit-test-success-hook nil)
+
+(defvar-local *ocamlunit-output-buf-name* "OCamlUnit output")
+
 (defun ocamlunit-execute-test ()
   "Call OCaml test via 'dune'."
   (let* ((test-cmd-args (list "opam" "exec" "dune" "test"))
          (call-args
-          (append (list (car test-cmd-args) nil "OCamlUnit output" t)
+          (append (list (car test-cmd-args) nil *ocamlunit-output-buf-name* t)
                   (cdr test-cmd-args))))
     (message "calling: %s" call-args)
     (let* ((default-directory (locate-dominating-file default-directory "dune-project"))
@@ -46,17 +51,24 @@
       call-result)))
 
 (defun ocamlunit-handle-successful-test-result ()
-  "Do some stuff when the tests ran OK."
+  "Do some stuff when the test ran OK."
+  (message "OCAMLUNIT: running commit hook.")
+  (run-hooks 'ocamlunit-test-success-hook)
   (message "%s" (propertize "Tests OK" 'face '(:foreground "green"))))
 
 (defun ocamlunit-handle-unsuccessful-test-result ()
-  "Do some stuff when the tests ran NOK."
+  "Do some stuff when the test ran NOK."
+  (message "OCAMLUNIT: running revert hook.")
+  (run-hooks 'ocamlunit-test-failure-hook)
   (message "%s" (propertize "Tests failed!" 'face '(:foreground "red"))))
 
 (defun ocamlunit-after-save-action ()
   "Execute the test."
   (message "ocamlunit: after save action from in: %s" major-mode)
 
+  (with-current-buffer *ocamlunit-output-buf-name*
+    (erase-buffer))
+  
   (let ((test-result (cond
                       ((string-equal "tuareg-mode" major-mode)
                        (ocamlunit-execute-test))
@@ -69,14 +81,15 @@
         (ocamlunit-handle-unsuccessful-test-result)))))
 
 (defun ocamlunit-execute ()
-  "Save buffers and execute dune to run the tests."
+  "Save buffers and execute dune to run the test."
   (interactive)
   (save-buffer)
   (save-some-buffers)
   (ocamlunit-after-save-action))
 
 (define-minor-mode ocamlunit-mode
-  "OCaml - OUnit/OUnit2 test runner. Actually `dune test' is run. So this might catch more tests than only OUnit"
+  "OCaml - OUnit/OUnit2 test runner. Actually `dune test' is run.
+So this might catch more tests than only OUnit"
   :lighter " OCamlUnit"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-c t") 'ocamlunit-execute)
