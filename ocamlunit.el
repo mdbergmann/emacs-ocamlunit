@@ -66,8 +66,9 @@
   "Execute the test."
   (message "ocamlunit: after save action from in: %s" major-mode)
 
-  (with-current-buffer *ocamlunit-output-buf-name*
-    (erase-buffer))
+  (when (get-buffer *ocamlunit-output-buf-name*)
+    (with-current-buffer *ocamlunit-output-buf-name*
+      (erase-buffer)))
   
   (let ((test-result (cond
                       ((string-equal "tuareg-mode" major-mode)
