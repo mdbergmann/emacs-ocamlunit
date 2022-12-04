@@ -88,6 +88,7 @@
   (save-some-buffers)
   (ocamlunit-after-save-action))
 
+;;;###autoload
 (define-minor-mode ocamlunit-mode
   "OCaml - OUnit/OUnit2 test runner. Actually `dune test' is run.
 So this might catch more tests than only OUnit"
